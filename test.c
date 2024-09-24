@@ -42,7 +42,7 @@ int main() {
   // Test 1: a test case that should return false because characters are duplicated
   strcpy(string3, "This should fail (l and s and i and h)");
   ok = hasUniqueChars(string3);
-  //assert(!(ok));
+  assert(!(ok));
   
   // Test 2: This should be true and not fail, but won't work until you
   // complete the hasUniqueChars() function
@@ -50,9 +50,42 @@ int main() {
   ok = hasUniqueChars(string3);
   assert(ok);
   
-  // TODO: add your tests here
+// tests all printable characters without duplicates
+//tests Aa-Zz
+  strcpy(string3, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  ok = hasUniqueChars(string3);
+  assert(ok);
 
+//tests special characters
+  strcpy(string3, "!#$&()*+,-./<=>?@={|}~")
+  ok = hasUniqueChars(string3);
+  assert(ok);
 
+//tests no duplicates
+  strcpy(string3, "The quick brown fox jumped over the lazy dog.");
+  ok = hasUniqueChars(string3);
+  assert(ok);
+
+//tests duplicates of letters
+  strcpy(string3, "Racecar taco cat!");
+  ok = hasUniqueChars(string3);
+  assert(!(ok));
+
+//tests duplicates of special characters
+  strcpy(string3, "Howdy!!!");
+  ok = hasUniqueChars(string3);
+  assert(!(ok));
+
+//tests just spaces
+  strcpy(string3, " ");
+  ok = hasUniqueChars(string3);
+  assert(ok);
+
+//tests high amount of characters
+  strcpy(string3, "This is a collaborative assignment: I encourage you to work in pairs! However, your pair should take turns working on your own");
+  ok = hasUniqueChars(string3);
+  assert(!(ok));
+// some non-printing characters
 
   // NOTE: if you add a \n to any tests, this should cause the
   //       exit failure given. Keep this test last so you can check 
