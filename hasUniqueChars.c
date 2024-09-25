@@ -1,9 +1,9 @@
 /*
  * hasUniqueChars.c
  * 
- * TODO: replace this line with lines containing a description
+ * checks if a string contains entirely unique, printable characters
  * 
- * Author: 
+ * Author: Sam Kenney
  */
 
 #include <stdio.h>  // fprintf, printf
@@ -32,8 +32,7 @@ void seeBits(unsigned long value, char *debug_text) {
 }
 
 
-// TODO: Read this carefully to see how to loop over characters of a string
-// TODO: (Remove TODOs once you have completed the task they describe)
+
 /*
  * Given an input string of chars, check for any non-printing
  * characters and print an error and exit if the string has any.
@@ -55,8 +54,14 @@ void checkInvalid(char * inputStr) {
 
 
 /*
- * TODO: Replace this code by a good description this function takes in, does and returns.
- * Include the error conditions that cause it to exit with failure.
+ *  checks if there are invalid characters in the string, then iterates over the string
+ sorts between A-z characters and !-@, as well as counts for space
+ uses a mask to determine the appropriate index of the character,
+ then compares with checkBits string
+ if one in the mask and checkBits, returns false, 
+ otherwise updates the checkBits string and moves to the next character
+ returns true if no duplicates are found
+ 
  */
 bool hasUniqueChars(char * inputStr) {
   // bail out quickly if any invalid characters
@@ -71,42 +76,41 @@ bool hasUniqueChars(char * inputStr) {
 
   char nextChar;         // next character in string to check
 
-  // -------------------------------------------------------------
-  // This section contains code to display the initial values of checkBitsA_z
-  // and checkBitsexcl_amp, for debugging purposes. 
-  // It also illustrates how to use the seeBits function for debugging.
-  // Printed values should initially be all zeros
-  // TODO: remove or comment out this code when satisfied of function correctness
-  
-  char debug_str_A_z[128];
-  strcpy(debug_str_A_z, "checkBitsA_z before: \n");
-  seeBits(checkBitsA_z, debug_str_A_z);
-  
-  char debug_str_excl_amp[128];
-  strcpy(debug_str_excl_amp, "checkBitsexcl_amp before: \n");
-  seeBits(checkBitsexcl_amp, debug_str_excl_amp);
-  // -------------------------------------------------------------
-
-  // TODO: Declare additional variables you need here
-
-  
   for(i = 0; i < strlen(inputStr); i++) {
     nextChar = inputStr[i];
-    // TODO: Add your code here to check nextChar, see if it is a duplicate, and update the checkBits variables
-
-    // -------------------------------------------------------------
-    // Below this are examples of debugging print statements you could use
-    // Move/use as makes sense for you!
-    // Modify to work on checkBitsexcl_amp
-    // TODO: Comment out or remove when your function works correctly
-    printf("nextchar int value: %d\n", nextChar);
-    char char_str[2] = "\0";
-    char_str[0] = nextChar;
-    strcpy(debug_str_A_z, "nextchar: ");
-    strcat(debug_str_A_z, char_str);
-    strcat(debug_str_A_z,", checkBitsA_z: \n");
-    seeBits(checkBitsA_z, debug_str_A_z);
-    // ------------------------------------------------------------- 
+    unsigned long index;
+    unsigned long mask;
+    if (nextChar == 32){
+      //if char is a space
+      continue;
+    }
+    if (nextChar <= 126 && nextChar >= 65){
+      index = nextChar - 65;
+      mask = 1l << index;
+      //if char is A-z
+      if (checkBitsA_z & mask){
+      //if there is a one in both the mask and the checkBits
+        return false;
+        
+      }
+      else{
+        //puts a one in the appropriate spot in the mask
+          checkBitsA_z = checkBitsA_z | mask;
+      }
+    }
+    if (nextChar >= 33 && nextChar <= 64){
+      index = nextChar - 33;
+      mask = 1l << index;
+      //if ! through @
+      if (checkBitsexcl_amp & mask){
+        //if there is a one in both the mask and the checkBits
+        return false; 
+      }
+      else{
+        //puts a one in the appropriate spot in the mask
+        checkBitsexcl_amp = checkBitsexcl_amp | mask;
+      }   
+    }
   }
 
   // if through all the characters, then no duplicates found

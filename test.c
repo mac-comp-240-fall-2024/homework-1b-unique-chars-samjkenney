@@ -1,5 +1,6 @@
 /*
  * TODO: Add an appropriate descriptive comment here
+  Author: Sam Kenney
  */
 
 #include <stdio.h>    // printf
@@ -41,6 +42,7 @@ int main() {
   // Test 1: a test case that should return false because characters are duplicated
   strcpy(string3, "This should fail (l and s and i and h)");
   ok = hasUniqueChars(string3);
+  //printf("%d", ok);
   assert(!(ok));
   
   // Test 2: This should be true and not fail, but won't work until you
@@ -48,16 +50,54 @@ int main() {
   strcpy(string3, "abcdefghij");
   ok = hasUniqueChars(string3);
   assert(ok);
+  //printf("%d", ok);
   
-  // TODO: add your tests here
+// tests all printable characters without duplicates
+//tests Aa-Zz
+  strcpy(string3, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  ok = hasUniqueChars(string3);
+  assert(ok);
 
+//tests special characters
+  strcpy(string3, "!#$&()*+,-./<>?@={|}~");
+  ok = hasUniqueChars(string3);
+  assert(ok);
 
+//tests no duplicates
+  strcpy(string3, "Squdgy fez, blank jimp crwth vox!");
+  ok = hasUniqueChars(string3);
+  assert(ok);
 
+//tests duplicates of letters
+  strcpy(string3, "Racecar taco cat!");
+  ok = hasUniqueChars(string3);
+  // printf("%d", ok);
+  assert(!(ok));
+
+//tests duplicates of special characters
+  strcpy(string3, "Howdy!@x:;:");
+  ok = hasUniqueChars(string3);
+  assert(!(ok));
+  // printf("%d", ok);
+
+//tests just spaces
+  strcpy(string3, " ");
+  ok = hasUniqueChars(string3);
+  assert(ok);
+
+//tests high amount of characters
+  strcpy(string3, "This is a collaborative assignment: I encourage you to work in pairs! However, your pair should take turns working on your own");
+  ok = hasUniqueChars(string3);
+  assert(!(ok));
+  //printf("%d", ok);
+
+  //tests non-printing characters
+  
   // NOTE: if you add a \n to any tests, this should cause the
   //       exit failure given. Keep this test last so you can check 
   //       that others pass or fail as you expect them to.
-  strcpy(string3, "a b cc\n");
-  ok = hasUniqueChars(string3);
+  // strcpy(string3, "a b cc\n");
+  // ok = hasUniqueChars(string3);
   // other examples that should fail that you can place in strings
   // are \0 or \t or \r
   // See problem description for more details about escape sequences
