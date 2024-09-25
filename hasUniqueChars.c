@@ -77,13 +77,13 @@ bool hasUniqueChars(char * inputStr) {
   // Printed values should initially be all zeros
   // TODO: remove or comment out this code when satisfied of function correctness
   
-  char debug_str_A_z[128];
-  strcpy(debug_str_A_z, "checkBitsA_z before: \n");
-  seeBits(checkBitsA_z, debug_str_A_z);
+  // char debug_str_A_z[128];
+  // strcpy(debug_str_A_z, "checkBitsA_z before: \n");
+  // seeBits(checkBitsA_z, debug_str_A_z);
   
-  char debug_str_excl_amp[128];
-  strcpy(debug_str_excl_amp, "checkBitsexcl_amp before: \n");
-  seeBits(checkBitsexcl_amp, debug_str_excl_amp);
+  // char debug_str_excl_amp[128];
+  // strcpy(debug_str_excl_amp, "checkBitsexcl_amp before: \n");
+  // seeBits(checkBitsexcl_amp, debug_str_excl_amp);
   // -------------------------------------------------------------
 
   // TODO: Declare additional variables you need here
@@ -91,27 +91,38 @@ bool hasUniqueChars(char * inputStr) {
   
   for(i = 0; i < strlen(inputStr); i++) {
     nextChar = inputStr[i];
-    
-      unsigned long index = nextChar - 65;
-      unsigned long mask = 1l << index;
-      if (nextChar == 32){
-        continue;
+    unsigned long index;
+    unsigned long mask;
+    if (nextChar == 32){
+      //if char is a space
+      continue;
+    }
+    if (nextChar <= 126 && nextChar >= 65){
+      index = nextChar - 65;
+      mask = 1l << index;
+      //if char is A-z
+      if (checkBitsA_z & mask){
+      //if there is a one in both the mask and the checkBits
+        return false;
+        
       }
-      if (nextChar <= 126 && nextChar >= 65){
-        if (checkBitsA_z & mask){
-          return false;
-        }
-        else{
-          checkBitsA_z = checkBitsA_z & mask;
-        }
+      else{
+        //puts a one in the appropriate spot in the mask
+          checkBitsA_z = checkBitsA_z | mask;
       }
-      if (nextChar <= 33 && nextChar >= 64){
-        if (checkBitsexcl_amp & mask){
-          return false;
-        }
-        else{
-          checkBitsexcl_amp = checkBitsexcl_amp & mask;
-        }   
+    }
+    if (nextChar >= 33 && nextChar <= 64){
+      index = nextChar - 33;
+      mask = 1l << index;
+      //if ! through @
+      if (checkBitsexcl_amp & mask){
+        //if there is a one in both the mask and the checkBits
+        return false; 
+      }
+      else{
+        //puts a one in the appropriate spot in the mask
+        checkBitsexcl_amp = checkBitsexcl_amp | mask;
+      }   
     }
 
     
